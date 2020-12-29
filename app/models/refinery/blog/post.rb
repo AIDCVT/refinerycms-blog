@@ -26,7 +26,7 @@ module Refinery
         Refinery::Blog.validate_source_url
       end
 
-      friendly_id :friendly_id_source, use: [:slugged, :globalize]
+      friendly_id :title, use: :slugged
 
       is_seo_meta
 
@@ -57,13 +57,7 @@ module Refinery
 
       # Override this to disable required authors
       def author_required?
-        !Refinery::Blog.user_class.nil?
-      end
-
-      # If custom_url or title changes tell friendly_id to regenerate slug when
-      # saving record
-      def should_generate_new_friendly_id?
-        saved_change_to_attribute?(:custom_url) || saved_change_to_attribute?(:title)
+        Refinery::Blog.user_class.present?
       end
 
       # Delegate SEO Attributes to globalize translation
@@ -82,10 +76,6 @@ module Refinery
 
       def live?
         !draft && published_at <= Time.now
-      end
-
-      def friendly_id_source
-        custom_url.presence || title
       end
 
       def author_username
