@@ -6,17 +6,17 @@
   <h2><%= t('.actions') %></h2>
   <ul>
     <li>
-      <%= link_to t('.back'), refinery.blog_admin_comments_path, :class => "back_icon" %>
+      <%= link_to t('.back'), refinery.blog_admin_comments_path, class: "back_icon" %>
     </li>
     <li>
     <%= link_to t('.reject'), refinery.reject_blog_admin_comment_path(@comment),
-                              :method => :post,
-                              :class => 'comment_cross_icon' unless @comment.rejected? %>
+                              method: :post,
+                              class: 'comment_cross_icon' unless @comment.rejected? %>
     </li>
     <li>
       <%= link_to t('.approve'), refinery.approve_blog_admin_comment_path(@comment),
-                                 :method => :post,
-                                 :class => 'comment_tick_icon' unless @comment.approved? %>
+                                 method: :post,
+                                 class: 'comment_tick_icon' unless @comment.approved? %>
     </li>
   </ul>
 </div>
@@ -29,8 +29,8 @@
       </td>
       <td>
         <%= link_to @comment.post.title,
-                    refinery.blog_post_path(@comment.post, :anchor => "comment-#{@comment.to_param}"),
-                    :target => '_blank' %>
+                    refinery.blog_post_path(@comment.post, anchor: "comment-#{@comment.to_param}"),
+                    target: '_blank' %>
       </td>
     </tr>
     <tr>
@@ -38,7 +38,7 @@
         <strong><%= t('.from') %></strong>
       </td>
       <td>
-        <%= @comment.name %> [<%= mail_to @comment.email, @comment.email, {:title => t('.click_to_email')} %>]
+        <%= @comment.name %> [<%= mail_to @comment.email, @comment.email, {title: t('.click_to_email')} %>]
       </td>
     </tr>
     <tr>
@@ -46,7 +46,7 @@
         <strong><%= t('.date') %></strong>
       </td>
       <td>
-        <%= l(Date.parse(@comment.created_at.to_s), :format => :long) %>
+        <%= l(Date.parse(@comment.created_at.to_s), format: :long) %>
       </td>
     </tr>
     <tr>

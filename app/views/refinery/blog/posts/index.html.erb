@@ -3,7 +3,7 @@
 
   <% if @posts.any? %>
     <section id="blog_posts">
-      <%= render :partial => "/refinery/blog/shared/post", :collection => @posts %>
+      <%= render partial: "/refinery/blog/shared/post", collection: @posts %>
       <%= will_paginate @posts %>
     </section>
   <% else %>

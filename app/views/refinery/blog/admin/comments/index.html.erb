@@ -1,5 +1,5 @@
 <%= render 'refinery/blog/admin/submenu' %>
-<%= render 'refinery/admin/search_header', :url => request.path %>
+<%= render 'refinery/admin/search_header', url: request.path %>
 <div id='records'>
   <% if @comments.any? %>
     <%= will_paginate @comments %>
@@ -9,11 +9,11 @@
     <%= will_paginate @comments %>
   <% else %>
     <% if searching? %>
-      <%= t('no_results', :scope => 'refinery.admin.search') %>
+      <%= t('no_results', scope: 'refinery.admin.search') %>
     <% else %>
       <p>
         <strong>
-          <%= t('.no_items_yet', :type => action_name.gsub('index', 'new').downcase) %>
+          <%= t('.no_items_yet', type: action_name.gsub('index', 'new').downcase) %>
         </strong>
       </p>
   <% end %>

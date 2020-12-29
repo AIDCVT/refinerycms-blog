@@ -51,7 +51,7 @@ module Refinery
 
       def self.toggle!
         currently = Refinery::Setting.find_or_set(:comments_allowed, true, {
-          :scoping => 'blog'
+          scoping: 'blog'
         })
         Refinery::Setting.set(:comments_allowed, {value: !currently, scoping: 'blog'})
       end
@@ -87,32 +87,32 @@ module Refinery
           def recipients
             Refinery::Setting.find_or_set(:comment_notification_recipients, (Refinery::Role[:refinery].users.first.email rescue ''),
             {
-              :scoping => 'blog',
-              :restricted => false
+              scoping: 'blog',
+              restricted: false
             })
           end
 
           def recipients=(emails)
             new_value = {
-              :value => emails,
-              :scoping => 'blog',
-              :restricted => false
+              value: emails,
+              scoping: 'blog',
+              restricted: false
             }
             Refinery::Setting.set(:comment_notification_recipients, new_value)
           end
 
           def subject
             Refinery::Setting.find_or_set(:comment_notification_subject, "New inquiry from your website", {
-              :scoping => 'blog',
-              :restricted => false
+              scoping: 'blog',
+              restricted: false
             })
           end
 
           def subject=(subject_line)
             new_value = {
-              :value => subject_line,
-              :scoping => 'blog',
-              :restricted => false
+              value: subject_line,
+              scoping: 'blog',
+              restricted: false
             }
             Refinery::Setting.set(:comment_notification_subject, new_value)
           end

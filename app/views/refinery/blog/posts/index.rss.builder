@@ -1,4 +1,4 @@
-xml.instruct! :xml, :version => "1.0"
+xml.instruct! :xml, version: "1.0"
 xml.rss version: "2.0", 'xmlns:atom': 'http://www.w3.org/2005/Atom', 'xmlns:media': 'http://search.yahoo.com/mrss/' do
   xml.channel do
     xml.title Refinery::Core.site_name

@@ -1,7 +1,6 @@
 module Refinery
   module Blog
     class CategoriesController < BlogController
-
       before_action :find_category, :find_all_blog_posts, only: :show
 
       private
@@ -13,7 +12,6 @@ module Refinery
       def post_finder_scope
         @category.posts
       end
-
     end
   end
 end

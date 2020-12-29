@@ -8,12 +8,12 @@ module Refinery
       attribute :slug
       after_save {translations.collect(&:save)}
 
-      friendly_id :title, :use => [:slugged, :globalize]
+      friendly_id :title, use: [:slugged, :globalize]
 
-      has_many :categorizations, :dependent => :destroy, :foreign_key => :blog_category_id
-      has_many :posts, :through => :categorizations, :source => :blog_post
+      has_many :categorizations, dependent: :destroy, foreign_key: :blog_category_id
+      has_many :posts, through: :categorizations, source: :blog_post
 
-      validates :title, :presence => true, :uniqueness => true
+      validates :title, presence: true, uniqueness: true
 
       def self.by_title(title)
         joins(:translations).find_by(title: title)

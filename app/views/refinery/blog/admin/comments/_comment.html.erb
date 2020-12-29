@@ -1,10 +1,10 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= "comment-#{comment.to_param}" -%>">
   <span class='title'>
     <%= comment.name %>
-    <span class="preview"> - <%= truncate(comment.message, :length => 75) %></span>
+    <span class="preview"> - <%= truncate(comment.message, length: 75) %></span>
   </span>
   <span class='actions'>
-    <%= action_icon(:preview, refinery.blog_post_path(comment.post, :anchor => "comment-#{comment.to_param}"), t('.view_live_html')) unless comment.unmoderated? %>
+    <%= action_icon(:preview, refinery.blog_post_path(comment.post, anchor: "comment-#{comment.to_param}"), t('.view_live_html')) unless comment.unmoderated? %>
     <%= action_icon(:search, refinery.blog_admin_comment_path(comment), t('.read')) %>
     <%= action_icon(:failure, refinery.reject_blog_admin_comment_path(comment), t('.reject'), method: 'post') unless comment.rejected? %>
     <%= action_icon(:success, refinery.approve_blog_admin_comment_path(comment), t('.approve'), method: 'post') unless comment.approved? %>

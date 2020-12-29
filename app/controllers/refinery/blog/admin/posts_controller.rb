@@ -30,22 +30,22 @@ module Refinery
 
           @tags = Refinery::Blog::Post.tag_counts_on(:tags).where(
               ["tags.name #{op} ?", "#{wildcard}#{params[:term].to_s.downcase}#{wildcard}"]
-            ).map { |tag| {:id => tag.id, :value => tag.name}}
-          render :json => @tags.flatten
+            ).map { |tag| {id: tag.id, value: tag.name}}
+          render json: @tags.flatten
         end
 
         def create
           # if the position field exists, set this object as last object, given the conditions of this class.
           if Refinery::Blog::Post.column_names.include?("position")
             post_params.merge!({
-              :position => ((Refinery::Blog::Post.maximum(:position, :conditions => "")||-1) + 1)
+              position: ((Refinery::Blog::Post.maximum(:position, conditions: "")||-1) + 1)
             })
           end
 
           if (@post = Refinery::Blog::Post.create(post_params)).valid?
             (request.xhr? ? flash.now : flash).notice = t(
               'refinery.crudify.created',
-              :what => "'#{@post.title}'"
+              what: "'#{@post.title}'"
             )
 
             unless from_dialog?
@@ -59,16 +59,16 @@ module Refinery
                 end
               end
             else
-              render :text => "<script>parent.window.location = '#{refinery.blog_admin_posts_url}';</script>"
+              render text: "<script>parent.window.location = '#{refinery.blog_admin_posts_url}';</script>"
             end
           else
             unless request.xhr?
               render :new
             else
-              render :partial => "/refinery/admin/error_messages",
-                     :locals => {
-                       :object => @post,
-                       :include_object_name => true
+              render partial: "/refinery/admin/error_messages",
+                     locals: {
+                       object: @post,
+                       include_object_name: true
                      }
             end
           end
@@ -77,7 +77,7 @@ module Refinery
         def delete_translation
           find_post
           @post.translations.find_by_locale(params[:locale_to_delete]).destroy
-          flash[:notice] = ::I18n.t('delete_translation_success', :scope => 'refinery.blog.admin.posts.post')
+          flash[:notice] = ::I18n.t('delete_translation_success', scope: 'refinery.blog.admin.posts.post')
           redirect_to refinery.blog_admin_posts_path
         end
 
@@ -91,7 +91,7 @@ module Refinery
           [
             :title, :body, :custom_teaser, :tag_list,
             :draft, :published_at, :custom_url, :user_id, :username, :browser_title,
-            :meta_description, :source_url, :source_url_title, :category_ids => []
+            :meta_description, :source_url, :source_url_title, category_ids: []
           ]
         end
 

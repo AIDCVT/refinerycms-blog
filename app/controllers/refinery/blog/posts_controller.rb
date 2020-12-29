@@ -19,7 +19,7 @@ module Refinery
             Post.newest_first.live.includes(:comments, :categories)
           end
         end
-        respond_with (@posts) do |format|
+        respond_with @posts do |format|
           format.html
           format.rss { render layout: false }
         end
@@ -55,7 +55,7 @@ module Refinery
           else
             flash[:notice] = t('thank_you', scope: 'refinery.blog.posts.comments')
             redirect_to refinery.blog_post_url(params[:id],
-                                      anchor: "comment-#{@comment.to_param}")
+                        anchor: "comment-#{@comment.to_param}")
           end
         else
           render :show
@@ -74,7 +74,7 @@ module Refinery
           @date_title = ::I18n.l(archive_date, format: '%Y')
           @posts = Post.live.by_year(archive_date).page(params[:page])
         end
-        respond_with (@posts)
+        respond_with @posts
       end
 
       def tagged
@@ -83,13 +83,14 @@ module Refinery
         @posts = Post.live.newest_first.distinct.tagged_with(@tag_name).page(params[:page])
       end
 
-    private
+      private
 
       def comment_params
         params.require(:comment).permit(:name, :email, :message)
       end
 
-    protected
+      protected
+
       def canonical?
         Refinery::I18n.default_frontend_locale != Refinery::I18n.current_frontend_locale
       end
