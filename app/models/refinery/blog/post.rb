@@ -84,19 +84,30 @@ module Refinery
       end
 
       class << self
-
         # Wrap up the logic of finding the pages based on the translations table.
-        def with_globalize(conditions = {})
-          conditions = { locale: ::Mobility.locale }.merge(conditions)
-          globalized_conditions = {}
-          conditions.keys.each do |key|
-            if (translated_attribute_names.map(&:to_s) | %w(locale)).include?(key.to_s)
-              globalized_conditions["#{self.translation_class.table_name}.#{key}"] = conditions.delete(key)
+        def with_mobility(conditions = {})
+          mobility_conditions = { locale: ::Mobility.locale.to_s }.merge(conditions)
+          translations_conditions = translations_conditions(mobility_conditions)
+
+          # A join implies readonly which we don't really want.
+          Post.i18n.where(mobility_conditions)
+              .joins(:translations)
+              .where(translations_conditions)
+              .readonly(false)
+        end
+
+        def translations_conditions(original_conditions)
+          translations_conditions = {}
+          original_conditions.keys.each do |key|
+            if translated_attributes.include? key.to_s
+              translations_conditions["#{Post::Translation.table_name}.#{key}"] = original_conditions.delete(key)
             end
           end
-          # A join implies readonly which we don't really want.
-          where(conditions).joins(:translations).where(globalized_conditions)
-            .readonly(false)
+          translations_conditions
+        end
+
+        def translated_attributes
+          translated_attribute_names.map(&:to_s) | %w[locale]
         end
 
         def by_month(date)
@@ -104,7 +115,7 @@ module Refinery
         end
 
         def by_year(date)
-          newest_first.where(published_at: date.beginning_of_year..date.end_of_year).with_globalize
+          newest_first.where(published_at: date.beginning_of_year..date.end_of_year).with_mobility
         end
 
         def by_title(title)
@@ -124,7 +135,7 @@ module Refinery
         end
 
         def popular(count)
-          order("access_count DESC").limit(count).with_globalize
+          order("access_count DESC").limit(count).with_mobility
         end
 
         def previous(item)
@@ -140,13 +151,13 @@ module Refinery
         def next(current_record)
           where(arel_table[:published_at].gt(current_record.published_at))
             .where(draft: false)
-            .order('published_at ASC').with_globalize.first
+            .order('published_at ASC').with_mobility.first
         end
 
         def published_before(date=Time.now)
           where(arel_table[:published_at].lt(date))
             .where(draft: false)
-            .with_globalize
+            .with_mobility
         end
 
         alias_method :live, :published_before
