@@ -2,13 +2,14 @@ module Refinery
   module Blog
     class Category < ActiveRecord::Base
       extend FriendlyId
+      extend Mobility
 
       translates :title, :slug
       attribute :title
       attribute :slug
-      after_save {translations.collect(&:save)}
+      after_save { translations.collect(&:save) }
 
-      friendly_id :title, use: [:slugged, :globalize]
+      friendly_id :title, use: [:slugged, :mobility]
 
       has_many :categorizations, dependent: :destroy, foreign_key: :blog_category_id
       has_many :posts, through: :categorizations, source: :blog_post
@@ -20,7 +21,7 @@ module Refinery
       end
 
       def self.translated
-        with_translations(::Globalize.locale)
+        with_translations(::Mobility.locale)
       end
 
       def post_count
