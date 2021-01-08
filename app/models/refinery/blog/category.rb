@@ -21,7 +21,7 @@ module Refinery
       end
 
       def self.translated
-        with_translations(::Mobility.locale)
+        i18n
       end
 
       def post_count
