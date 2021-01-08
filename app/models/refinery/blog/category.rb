@@ -25,7 +25,7 @@ module Refinery
       end
 
       def post_count
-        posts.live.with_globalize.count
+        posts.live.with_mobility.count
       end
 
       # how many items to show per page
