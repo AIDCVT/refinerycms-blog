@@ -6,7 +6,7 @@ module Refinery
       private
 
       def find_category
-        @category = Refinery::Blog::Category.friendly.find(params[:id])
+        @category = Refinery::Blog::Category.i18n.friendly.find(params[:id])
       end
 
       def post_finder_scope

@@ -52,10 +52,6 @@ module Refinery
         verify: [:resolve_redirects]
       }
 
-      class Translation
-        is_seo_meta
-      end
-
       # Override this to disable required authors
       def author_required?
         Refinery::Blog.user_class.present?

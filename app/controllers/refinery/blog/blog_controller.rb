@@ -24,7 +24,7 @@ module Refinery
       def find_all_blog_posts
         @posts = post_finder_scope.live.includes(
           :comments, :categories, :translations
-        ).with_globalize.newest_first.page(params[:page])
+        ).with_mobility.newest_first.page(params[:page])
       end
 
       def find_page
@@ -36,7 +36,7 @@ module Refinery
       end
 
       def post_finder_scope
-        Refinery::Blog::Post
+        Refinery::Blog::Post.i18n
       end
     end
   end
